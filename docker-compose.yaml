@@ -1,0 +1,18 @@
+services:
+    agent-tools:
+        build:
+            context: .
+            args:
+                - MY_USERNAME=${MY_USERNAME}
+                - MY_UID=${MY_UID}
+                - MY_GID=${MY_GID}
+        image: ${MY_IMAGE_NAME}:1.0.0
+        network_mode: "bridge"
+        volumes:
+            - /etc/passwd:/etc/passwd:ro
+            - /etc/group:/etc/group:ro
+        user: ${MY_UID}:${MY_GID}
+        cap_add:
+            - SYS_ADMIN
+        security_opt:
+            - seccomp=unconfined
