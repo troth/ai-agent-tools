@@ -16,6 +16,7 @@ RUN apt-get update \
         ca-certificates \
         curl \
         fd-find \
+        file \
         git \
         gnupg \
         jq \
@@ -29,6 +30,7 @@ RUN apt-get update \
         tmux \
         tree \
         unzip \
+        vim \
         wget \
         zip \
     && rm -rf /var/lib/apt/lists/*
@@ -58,6 +60,13 @@ WORKDIR /home/${USERNAME}
 
 # TODO: Do stuff a target user More installation of tools
 
+RUN curl -L -v https://github.com/neovim/neovim/releases/download/v0.12.1/nvim-linux-x86_64.tar.gz \
+        -o /tmp/nvim.tar.gz \
+    && ls -al /tmp \
+    && tar -C /home/${USERNAME}/.local -xf /tmp/nvim.tar.gz --strip-components=1
+
+RUN curl -fsSL https://opencode.ai/install | /bin/bash
+
 # Back to running commands as root.
 USER root
 
@@ -70,6 +79,4 @@ WORKDIR /home/${USERNAME}/workdir
 # Set the entrypoint (runs as root, then switches to ${USERNAME})
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 
-# Default command is to run opencode
-# CMD ["opencode"]
 CMD ["/bin/bash", "-l"]

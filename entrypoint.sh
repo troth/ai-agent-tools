@@ -2,5 +2,4 @@
 
 echo "entrypoint.sh"
 set -x
-/bin/bash
-/bin/false
+/bin/bash -l
