@@ -1,0 +1,5 @@
+services:
+    agents:
+        volumes:
+            - $HOME/.config/nvim:$HOME/.config/nvim:ro
+            - $HOME/.vimrc:$HOME/.vimrc:ro

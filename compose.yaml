@@ -1,5 +1,5 @@
 services:
-    agent-tools:
+    agents:
         build:
             context: .
             args:
@@ -11,6 +11,7 @@ services:
         volumes:
             - /etc/passwd:/etc/passwd:ro
             - /etc/group:/etc/group:ro
+            - $HOME/.gitconfig:$HOME/.gitconfig:ro
         user: ${MY_UID}:${MY_GID}
         cap_add:
             - SYS_ADMIN

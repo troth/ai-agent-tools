@@ -1,0 +1,6 @@
+services:
+    agents:
+        volumes:
+            - $HOME/.gitconfig-user:$HOME/.gitconfig-user:ro
+            - $HOME/.gitignore:$HOME/.gitignore:ro
+            - $HOME/.githooks:$HOME/.githooks:ro
