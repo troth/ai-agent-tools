@@ -1,0 +1,3 @@
+FROM ollama/ollama:latest
+
+ENTRYPOINT ["/usr/bin/ollama", "serve"]

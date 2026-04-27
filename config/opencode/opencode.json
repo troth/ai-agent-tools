@@ -1,0 +1,25 @@
+{
+    "provider": {
+        "ollama": {
+            "npm": "@ai-sdk/openai-compatible",
+            "name": "Ollama (local)",
+            "options": {
+                "baseURL": "http://172.31.1.22:11434/v1"
+            },
+            "models": {
+                "gemma4:e2b": {
+                    "name": "gemma4:e2b"
+                },
+                "qwen2.5-coder:3b": {
+                    "name": "qwen2.5-coder:3b"
+                },
+                "qwen2.5-coder:7b": {
+                    "name": "qwen2.5-coder:7b"
+                },
+                "qwen3.6:27b": {
+                    "name": "qwen3.6:27b"
+                }
+            }
+        }
+    }
+}

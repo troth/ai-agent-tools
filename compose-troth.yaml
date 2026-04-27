@@ -1,3 +1,9 @@
+# vim:ts=4:sw=4:et
+#
+# My .gitconfig file includes some other git files and I have some other global
+# git hooks and ignore files I want in the container.
+#
+
 services:
     agents:
         volumes:
