@@ -1,6 +1,6 @@
 # vim:ts=4:sw=4:et
 
-name: ai-agent-tools
+name: ai-tools
 
 services:
     agents:
@@ -11,7 +11,7 @@ services:
                 - MY_USERNAME=${MY_USERNAME}
                 - MY_UID=${MY_UID}
                 - MY_GID=${MY_GID}
-        image: ${MY_IMAGE_NAME}:1.2.0
+        image: openavr/${COMPOSE_PROJECT_NAME}-agents-${MY_USERNAME}:1.0.0
         network_mode: "bridge"
         volumes:
             - /etc/passwd:/etc/passwd:ro
@@ -26,6 +26,7 @@ services:
         build:
             context: .
             dockerfile: Dockerfile.ollama
+        image: openavr/${COMPOSE_PROJECT_NAME}-ollama:1.0.0
         ports:
             - "11434:11434"
         volumes:
