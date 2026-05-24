@@ -24,11 +24,12 @@ COMPOSE_ARGS=(
     -f compose.yaml
 )
 
-# Automatically add a user specific compose file if present.
-if [ -e compose-${USER}.yaml ]
-then
-    COMPOSE_ARGS+=( -f compose-${USER}.yaml )
-fi
+for yaml in compose.yaml.d/*.yaml
+do
+    if [[ -e ${yaml} ]]; then
+        COMPOSE_ARGS+=( -f ${yaml} )
+    fi
+done
 
 # These args must come after the `run` command.
 RUN_ARGS=( )
