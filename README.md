@@ -15,10 +15,10 @@ needed by the container:
 
 ## Docker Data Storage
 
-By default, docker is configure to use `/var/lib/docker` for data storage. This
-is where it stores all images and volumes.
+By default, docker is configured to use `/var/lib/docker` for data storage.
+This is where it stores all images and volumes.
 
-The docker compose file in this repository use a persistent volume for ollama
+The docker compose file in this repository use a persistent volume for `ollama`
 which will contain the pulled models.
 
 Docker images and volumes can consume a significant about of disk space, so you
@@ -89,6 +89,13 @@ You can also map files instead of directories:
             -v $HOME/proj/foo/README.md:$HOME/workdir/README.md \
             -v $HOME/proj/foo/data.json:$HOME/workdir/data.json \
 
+### Connecting Running Conntainer
+
+Once you have start the `agents` container, you can make another connection to
+it from another terminal with the following command:
+
+    $ docker compose exec agents /bin/bash -l
+
 ## Running a local LLM
 
 There are couple of ways to start the `ollama` container, but the following
@@ -116,6 +123,12 @@ Once connected, you will need to install some models for `ollama` to use.
     $ ollama pull qwen2.5-coder:3b
     $ ollama pull qwen3.6:27b
     $ ollama pull gemma4:e2b
+
+### Using Models
+
+Finally, you can run a model and enter prompts:
+
+    $ ollama run <model>
 
 ## Using OpenCode
 
