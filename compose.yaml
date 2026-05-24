@@ -6,12 +6,12 @@ services:
     agents:
         build:
             context: .
-            dockerfile: Dockerfile.opencode
+            dockerfile: Dockerfile.agents
             args:
                 - MY_USERNAME=${MY_USERNAME}
                 - MY_UID=${MY_UID}
                 - MY_GID=${MY_GID}
-        image: ${MY_IMAGE_NAME}:1.1.1
+        image: ${MY_IMAGE_NAME}:1.2.0
         network_mode: "bridge"
         volumes:
             - /etc/passwd:/etc/passwd:ro
@@ -35,6 +35,7 @@ services:
             - OLLAMA_MODELS=/root/.ollama/models
             - OLLAMA_NO_CLOUD=1
             - OLLAMA_DEBUG=1
+            - OLLAMA_KEEP_ALIVE=-1
             - NVIDIA_VISIBLE_DEVICES=all
         runtime: nvidia
 
