@@ -19,7 +19,7 @@ services:
             - $HOME/.gitconfig:$HOME/.gitconfig:ro
             - opencode-share:$HOME/.local/share/opencode
             - opencode-state:$HOME/.local/state/opencode
-            - opencode-workdir:$HOME/workdir
+            - agents-workdir:$HOME/workdir
         user: ${MY_UID}:${MY_GID}
 
     ollama:
@@ -42,5 +42,5 @@ services:
 volumes:
     opencode-share:
     opencode-state:
-    opencode-workdir:
+    agents-workdir:
     ollama-data:
