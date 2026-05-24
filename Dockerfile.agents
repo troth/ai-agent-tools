@@ -65,7 +65,7 @@ WORKDIR /home/${USERNAME}
 
 # TODO: Do stuff as target user. Installation of more tools.
 
-RUN curl -L -v https://github.com/neovim/neovim/releases/download/v0.11.7/nvim-linux-x86_64.tar.gz \
+RUN curl -L -v https://github.com/neovim/neovim/releases/download/v0.12.2/nvim-linux-x86_64.tar.gz \
         -o /tmp/nvim.tar.gz \
     && ls -al /tmp \
     && tar -C /home/${USERNAME}/.local -xf /tmp/nvim.tar.gz --strip-components=1
