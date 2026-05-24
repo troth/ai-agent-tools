@@ -7,17 +7,20 @@
                 "baseURL": "http://172.31.1.22:11434/v1"
             },
             "models": {
-                "gemma4:e2b": {
-                    "name": "gemma4:e2b"
+                "gemma4:26b": {
+                    "tools": true
                 },
-                "qwen2.5-coder:3b": {
-                    "name": "qwen2.5-coder:3b"
+                "gemma4:31b": {
+                    "tools": true
                 },
-                "qwen2.5-coder:7b": {
-                    "name": "qwen2.5-coder:7b"
+                "granite4.1:30b": {
+                    "tools": true
                 },
                 "qwen3.6:27b": {
-                    "name": "qwen3.6:27b"
+                    "tools": true
+                },
+                "qwen3.6:35b": {
+                    "tools": true
                 }
             }
         }
