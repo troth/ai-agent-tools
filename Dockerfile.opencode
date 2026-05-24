@@ -52,6 +52,7 @@ RUN echo "dash dash/sh boolean false" | debconf-set-selections \
 RUN mkdir -p /home/${USERNAME}/.config/opencode && \
     mkdir -p /home/${USERNAME}/.config/openspec && \
     mkdir -p /home/${USERNAME}/.local/share/opencode && \
+    mkdir -p /home/${USERNAME}/.local/state/opencode && \
     mkdir -p /home/${USERNAME}/.cache/opencode && \
     mkdir -p /home/${USERNAME}/.cache/oh-my-opencode && \
     mkdir -p /home/${USERNAME}/.cache/openspec && \
