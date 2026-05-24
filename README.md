@@ -65,7 +65,6 @@ $HOME/workdir inside the container:
 Again, a convenience script to make it easier to run the containers is provided:
 
     $ ./image-run.sh
-    $ ./image-run.sh -f compose-vim-cfg.yaml
 
 If you don't specify a volume to mount into the workdir, any work you do in the
 container will be lost when you exit the container.
@@ -73,19 +72,18 @@ container will be lost when you exit the container.
 The following shows how to map a single project into the workdir in the
 container:
 
-    $ ./image-run.sh -f compose-vim-cfg.yaml \
-            -v $HOME/proj/foo:$HOME/workdir
+    $ ./image-run.sh -v $HOME/proj/foo:$HOME/workdir
 
 The following shows how to map multiple projects into the workdir in the
 container:
 
-    $ ./image-run.sh -f compose-vim-cfg.yaml \
+    $ ./image-run.sh \
             -v $HOME/proj/foo:$HOME/workdir/foo \
             -v $HOME/proj/bar:$HOME/workdir/bar \
 
 You can also map files instead of directories:
 
-    $ ./image-run.sh -f compose-vim-cfg.yaml \
+    $ ./image-run.sh \
             -v $HOME/proj/foo/README.md:$HOME/workdir/README.md \
             -v $HOME/proj/foo/data.json:$HOME/workdir/data.json \
 
@@ -108,7 +106,7 @@ The `-P` option is needed to map the 11434 ollama port into the host.
 Once the `ollama` container is running, can directly connect to the container
 from the host with:
 
-    $ docker compose exec ollama bash
+    $ docker compose exec ollama bash -l
 
 If you have `ollama` installed on the host, you can also use it connect to the
 `ollama` server running in the container:
