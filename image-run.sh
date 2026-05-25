@@ -19,16 +19,21 @@
 # useful when the paths are long and you don't want to type them repeatedly.
 #
 
-# These args most come before the `run` command in the docker compose command.
+# These args must come before the `run` command in the docker compose command.
 COMPOSE_ARGS=(
     -f compose.yaml
 )
 
-for yaml in compose.yaml.d/*.yaml
+shopt -s nullglob
+COMPOSE_FILES=(
+    compose.yaml.d/*.yaml
+    compose.yaml.d/*.yml
+)
+shopt -u nullglob
+
+for yaml in "${COMPOSE_FILES[@]}"
 do
-    if [[ -e ${yaml} ]]; then
-        COMPOSE_ARGS+=( -f ${yaml} )
-    fi
+    COMPOSE_ARGS+=( -f ${yaml} )
 done
 
 # These args must come after the `run` command.
