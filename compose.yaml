@@ -42,6 +42,9 @@ services:
 
 volumes:
     opencode-share:
+        name: ${COMPOSE_PROJECT_NAME}_opencode-share-${MY_USERNAME}
     opencode-state:
+        name: ${COMPOSE_PROJECT_NAME}_opencode-state-${MY_USERNAME}
     agents-workdir:
+        name: ${COMPOSE_PROJECT_NAME}_agents-workdir-${MY_USERNAME}
     ollama-data:
