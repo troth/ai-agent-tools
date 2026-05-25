@@ -103,10 +103,19 @@ works for me:
 
 The `-P` option is needed to map the 11434 ollama port into the host.
 
+Convience script for running ollama:
+
+    $ ./ollama-run.sh
+
 Once the `ollama` container is running, can directly connect to the container
 from the host with:
 
     $ docker compose exec ollama bash -l
+
+Convenience script for connecting to the running ollama container (extra
+arguments can be passed via the command line):
+
+    $ ./ollama-shell.sh
 
 If you have `ollama` installed on the host, you can also use it connect to the
 `ollama` server running in the container:
