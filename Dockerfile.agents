@@ -9,6 +9,8 @@ ENV USERNAME=${MY_USERNAME:-dumbass}
 ENV UID=${MY_UID:-1000}
 ENV GID=${MY_GID:-1000}
 
+USER root
+
 RUN apt-get update \
     && apt-get install -y \
         apt-transport-https \
@@ -24,6 +26,7 @@ RUN apt-get update \
         iproute2 \
         iputils-ping \
         jq \
+        kitty-terminfo \
         less \
         lsb-release \
         lsof \
@@ -39,6 +42,11 @@ RUN apt-get update \
         zip \
     && rm -rf /var/lib/apt/lists/*
 
+RUN curl -L -v https://github.com/neovim/neovim/releases/download/v0.12.3/nvim-linux-x86_64.tar.gz \
+        -o /tmp/nvim.tar.gz \
+    && ls -al /tmp \
+    && tar -C /usr/local -xf /tmp/nvim.tar.gz --strip-components=1
+
 # Do not run as root, use sudo without password; might be useless
 RUN groupadd -g ${GID} ${USERNAME} \
     && useradd -u ${UID} -g ${GID} -m -s /bin/bash ${USERNAME} \
@@ -49,41 +57,18 @@ RUN groupadd -g ${GID} ${USERNAME} \
 RUN echo "dash dash/sh boolean false" | debconf-set-selections \
     && dpkg-reconfigure dash
 
-RUN mkdir -p /home/${USERNAME}/.config/opencode && \
-    mkdir -p /home/${USERNAME}/.config/openspec && \
-    mkdir -p /home/${USERNAME}/.local/share/opencode && \
-    mkdir -p /home/${USERNAME}/.local/state/opencode && \
-    mkdir -p /home/${USERNAME}/.cache/opencode && \
-    mkdir -p /home/${USERNAME}/.cache/oh-my-opencode && \
-    mkdir -p /home/${USERNAME}/.cache/openspec && \
-    mkdir -p /home/${USERNAME}/.npm && \
-    mkdir -p /home/${USERNAME}/workdir && \
+RUN \
+    mkdir -p /home/${USERNAME}/.local && \
+    mkdir -p /home/${USERNAME}/workspace && \
     chown -R ${USERNAME}:${USERNAME} /home/${USERNAME}
 
 USER ${USERNAME}
 WORKDIR /home/${USERNAME}
 
-# TODO: Do stuff as target user. Installation of more tools.
-
-RUN curl -L -v https://github.com/neovim/neovim/releases/download/v0.12.2/nvim-linux-x86_64.tar.gz \
-        -o /tmp/nvim.tar.gz \
-    && ls -al /tmp \
-    && tar -C /home/${USERNAME}/.local -xf /tmp/nvim.tar.gz --strip-components=1
-
-COPY config/opencode/*.json /home/${USERNAME}/.config/opencode
-
 RUN curl -fsSL https://opencode.ai/install | /bin/bash
 RUN curl -fsSL https://cursor.com/install | /bin/bash
 RUN curl -fsSL https://claude.ai/install.sh | /bin/bash
 
-# Back to running commands as root.
-USER root
-
-COPY entrypoint.sh /usr/local/bin/entrypoint.sh
-RUN chmod +x /usr/local/bin/entrypoint.sh
-
 # Default working directory (overridden at runtime by --workdir)
-WORKDIR /home/${USERNAME}/workdir
-
-# Set the entrypoint (runs as root, then switches to ${USERNAME})
-ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+WORKDIR /home/${USERNAME}/workspace
+CMD ["/bin/bash", "-l"]

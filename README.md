@@ -12,7 +12,6 @@ needed by the container:
 
     $ ./setup-docker-env.sh
 
-
 ## Docker Data Storage
 
 By default, docker is configured to use `/var/lib/docker` for data storage.
@@ -51,30 +50,56 @@ A convenience script to make it easier to do the build is provided:
     $ ./image-build.sh
     $ ./image-build.sh --no-cache
 
-## Running the Container
+## Installation
+
+Create a symlink in a directory in your `PATH` which points to the
+`agent-container-run` script. For example, since `$HOME/bin` is in my `PATH`, I
+usually do the following from the top level of this project directory:
+
+    $ ln -s $PWD/agent-container-run $HOME/bin
+
+## Running the Agent Container
+
+The preferred way to run the agent container is with the following:
+
+    $ cd <some-project-directory>
+    $ agent-container-run
+
+This will make the current working directory accessible within the container by
+mapping it as a volume under `$HOME/workspace` inside the container. You will
+be dropped into an interactive bash shell where you can run commands inside the
+container.
+
+From inside the container, you can start your preferred agent tool:
+
+* `$ opencode`
+* `$ cursor-agent`
+* `$ claude`
+
+### Alternate Methods of Running the Agent Container
 
 To run the container:
 
     $ docker compose run --rm agents
 
 To run the container mounting a specific project into the container onto the
-$HOME/workdir inside the container:
+`$HOME/workspace` inside the container:
 
-    $ docker compose run --rm -v ${HOME}/proj/foo:${HOME}/workdir agents
+    $ docker compose run --rm -v ${HOME}/proj/foo:${HOME}/workspace agents
 
 Again, a convenience script to make it easier to run the containers is provided:
 
     $ ./image-run.sh
 
-If you don't specify a volume to mount into the workdir, any work you do in the
-container will be lost when you exit the container.
+If you don't specify a volume to mount into the workspace, any work you do in
+the container will be lost when you exit the container.
 
-The following shows how to map a single project into the workdir in the
+The following shows how to map a single project into the workspace in the
 container:
 
     $ ./image-run.sh -v $HOME/proj/foo:$HOME/workdir
 
-The following shows how to map multiple projects into the workdir in the
+The following shows how to map multiple projects into the workspace in the
 container:
 
     $ ./image-run.sh \
@@ -87,7 +112,7 @@ You can also map files instead of directories:
             -v $HOME/proj/foo/README.md:$HOME/workdir/README.md \
             -v $HOME/proj/foo/data.json:$HOME/workdir/data.json \
 
-### Connecting Running Conntainer
+### Connecting Running Container
 
 Once you have start the `agents` container, you can make another connection to
 it from another terminal with the following command:
@@ -103,7 +128,7 @@ works for me:
 
 The `-P` option is needed to map the 11434 ollama port into the host.
 
-Convience script for running ollama:
+Convenience script for running ollama:
 
     $ ./ollama-run.sh
 

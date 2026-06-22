@@ -1,0 +1,71 @@
+#!/usr/bin/bash
+#
+# Starts an AI Agent container and maps the CWD (Current Working Directory)
+# into a confined workspace inside the container. This workspace is the only
+# area inside the container which has Read/Write access to anything in the host
+# OS.
+#
+# If the user attempts to run from $HOME, the script will issue a warning and
+# require confirmation action from the user before continuing.
+#
+# Installation:
+#
+#   Put a symlink to the 'ai-container-run' script somewhere in your path.
+#   Some examples, pick one that works for your setup on your system:
+#
+#       $ ln -s $PWD/agent-container-run $HOME/bin/
+#       $ ln -s $PWD/agent-container-run $HOME/.local/bin/
+#
+
+function confirm() {
+    prompt="${1:-Continue?}"
+
+    read -r -p "${prompt} [y/N]: " resp
+    case "${resp:-N}" in
+        [yY]*)
+            return 0
+            ;;
+        *)
+            echo aborting
+            return 1
+            ;;
+    esac
+}
+
+if [[ ${HOME} = ${PWD} ]]
+then
+    cat <<EOF
+
+##############################################################################
+# Warning!
+#
+# The current working directory is your HOME directory. It is not recommended
+# to give the AI container full R/W access to your entire HOME directory.
+##############################################################################
+EOF
+    confirm "Do your really want to do this?" || exit 1
+fi
+
+WORKSPACE=$PWD
+
+SCRIPT_PATH="${BASH_SOURCE}"
+while test -L "${SCRIPT_PATH}"
+do
+    SCRIPT_DIR="$(cd -P "$(dirname "${SCRIPT_PATH}")" >/dev/null 2>&1 && pwd)"
+    SCRIPT_PATH="$(readlink "${SCRIPT_PATH}")"
+    if [[ ${SCRIPT_PATH} != /* ]]
+    then
+        SCRIPT_PATH="${SCRIPT_DIR}/${SCRIPT_PATH}"
+    fi
+done
+SCRIPT_PATH="$(readlink -f "${SCRIPT_PATH}")"
+SCRIPT_DIR="$(cd -P "$(dirname -- "${SCRIPT_PATH}")" >/dev/null 2>&1 && pwd)"
+cd "${SCRIPT_DIR}"
+
+cat <<EOF
+WORKSPACE:   ${WORKSPACE}
+SCRIPT_PATH: ${SCRIPT_PATH}
+SCRIPT_DIR:  ${PWD}
+EOF
+
+./image-run.sh -v ${WORKSPACE}:$HOME/workspace "${@}"

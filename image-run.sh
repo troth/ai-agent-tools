@@ -55,4 +55,5 @@ do
 done
 
 set -x
-exec docker compose "${COMPOSE_ARGS[@]}" run --rm "${RUN_ARGS[@]}" agents
+exec docker compose "${COMPOSE_ARGS[@]}" \
+    run --rm --interactive "${RUN_ARGS[@]}" agents

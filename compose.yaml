@@ -11,15 +11,16 @@ services:
                 - MY_USERNAME=${MY_USERNAME}
                 - MY_UID=${MY_UID}
                 - MY_GID=${MY_GID}
-        image: openavr/${COMPOSE_PROJECT_NAME}-agents-${MY_USERNAME}:1.0.0
+        image: openavr/${COMPOSE_PROJECT_NAME}-agents-${MY_USERNAME}:1.2.0
         network_mode: "bridge"
         volumes:
             - /etc/passwd:/etc/passwd:ro
             - /etc/group:/etc/group:ro
             - $HOME/.gitconfig:$HOME/.gitconfig:ro
-            - opencode-share:$HOME/.local/share/opencode
-            - opencode-state:$HOME/.local/state/opencode
-            - agents-workdir:$HOME/workdir
+            - $PWD/config:/$HOME/.config
+            - $PWD/cache:/$HOME/.cache
+            - $PWD/local/share/opencode:$HOME/.local/share/opencode
+            - $PWD/local/state:$HOME/.local/state
         user: ${MY_UID}:${MY_GID}
 
     ollama:
@@ -41,10 +42,4 @@ services:
         runtime: nvidia
 
 volumes:
-    opencode-share:
-        name: ${COMPOSE_PROJECT_NAME}_opencode-share-${MY_USERNAME}
-    opencode-state:
-        name: ${COMPOSE_PROJECT_NAME}_opencode-state-${MY_USERNAME}
-    agents-workdir:
-        name: ${COMPOSE_PROJECT_NAME}_agents-workdir-${MY_USERNAME}
     ollama-data:
